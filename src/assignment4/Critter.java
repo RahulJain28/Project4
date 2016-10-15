@@ -52,16 +52,51 @@ public abstract class Critter {
 	private int y_coord;
 
     /**
-     * Update critter's energy and then update it's position
+     * Update critter's energy and then update it's position by 1 step in chosen direction
      * @param direction integer direction of motion
      */
 	protected final void walk(int direction) {
         this.energy = this.energy - Params.walk_energy_cost;
+        /*Changing x coordinate */
+        if (direction==0 || direction==1 || direction==7) {
+            this.x_coord++;
+        }
+        else if (direction==3 || direction==4 || direction==5) {
+            this.x_coord--;
+        }
 
+        /*Changing y coordinate */
+        if (direction==1 || direction==2 || direction==3) {
+            this.y_coord++;
+        }
+        else if (direction==5 || direction==6 || direction==7) {
+            this.y_coord--;
+        }
 
 	}
-	
+
+    /**
+     * Update's critter's energy and updates it's position by 2 steps in chosen direction
+     * @param direction integer direction of motion. Direction increases in counter clockwise direction
+     */
 	protected final void run(int direction) {
+        this.energy = this.energy - Params.run_energy_cost;
+
+        /*Changing x coordinate */
+        if (direction==0 || direction==1 || direction==7) {
+            this.x_coord+=2;
+        }
+        else if (direction==3 || direction==4 || direction==5) {
+            this.x_coord-=2;
+        }
+
+        /*Changing y coordinate */
+        if (direction==1 || direction==2 || direction==3) {
+            this.y_coord+=2;
+        }
+        else if (direction==5 || direction==6 || direction==7) {
+            this.y_coord-=2;
+        }
 		
 	}
 	
