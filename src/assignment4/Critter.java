@@ -12,6 +12,8 @@
  */
 package assignment4;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -48,8 +50,15 @@ public abstract class Critter {
 	
 	private int x_coord;
 	private int y_coord;
-	
+
+    /**
+     * Update critter's energy and then update it's position
+     * @param direction integer direction of motion
+     */
 	protected final void walk(int direction) {
+        this.energy = this.energy - Params.walk_energy_cost;
+
+
 	}
 	
 	protected final void run(int direction) {
@@ -60,7 +69,7 @@ public abstract class Critter {
 	}
 
 	public abstract void doTimeStep();
-	public abstract boolean fight(String oponent);
+	public abstract boolean fight(String opponent);
 	
 	/**
 	 * create and initialize a Critter subclass.
@@ -69,10 +78,25 @@ public abstract class Critter {
 	 * (Java weirdness: Exception throwing does not work properly if the parameter has lower-case instead of
 	 * upper. For example, if craig is supplied instead of Craig, an error is thrown instead of
 	 * an Exception.)
-	 * @param critter_class_name
+	 * @param critter_class_name the name of the critter class being created
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+        TestCritter c;
+		try {
+			Class newCritter = Class.forName(myPackage + "." + critter_class_name);
+            c = (TestCritter) newCritter.newInstance();
+            int x = getRandomInt(Params.world_width);
+            int y = getRandomInt(Params.world_height);
+            c.setX_coord(x);
+            c.setY_coord(y);
+            c.setEnergy(Params.start_energy);
+            population.add(c);
+		}
+		catch (ClassNotFoundException | InstantiationException |IllegalAccessException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+        
 	}
 	
 	/**
@@ -82,9 +106,10 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
-		List<Critter> result = new java.util.ArrayList<Critter>();
+
+
 	
-		return result;
+		return null;
 	}
 	
 	/**
@@ -168,8 +193,16 @@ public abstract class Critter {
 	 */
 	public static void clearWorld() {
 	}
-	
+
+    /**
+     * Step 1 - Invoke doTimeStep() for every living critter. Encounters are handled only after
+     *          every critter has moved
+     * Step 2 - Handle encounters
+     */
 	public static void worldTimeStep() {
+        for (int i = 0; i < population.size(); i++) {
+            population.get(i).doTimeStep();
+        }
 	}
 	
 	public static void displayWorld() {}
