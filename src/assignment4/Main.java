@@ -68,10 +68,32 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-        
-        System.out.println("GLHF");
-        
-        /* Write your code above */
+
+        try {
+            for (int i = 0; i < 3; i++) {
+                Critter.makeCritter("Craig");
+            }
+        }
+        catch (InvalidCritterException e) {
+            System.out.println("System processing");
+        }
+        while(true) {
+            System.out.print("critters>");
+            String input = kb.next();
+            if (input.equals("quit")) {
+                break;
+            }
+            if (input.equals("show")) {
+                Critter.displayWorld();
+                System.out.println();
+            }
+            if (input.equals("seed")) {
+                long num = kb.nextInt();
+                Critter.setSeed(num);
+                System.out.println();
+            }
+        }
+
         System.out.flush();
 
     }

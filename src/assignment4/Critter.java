@@ -104,15 +104,15 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
-        TestCritter c;
+        Critter c;
 		try {
 			Class newCritter = Class.forName(myPackage + "." + critter_class_name);
-            c = (TestCritter) newCritter.newInstance();
+            c = (Critter) newCritter.newInstance();
             int x = getRandomInt(Params.world_width);
             int y = getRandomInt(Params.world_height);
-            c.setX_coord(x);
-            c.setY_coord(y);
-            c.setEnergy(Params.start_energy);
+            c.x_coord = x;
+            c.y_coord = y;
+            c.energy = Params.start_energy;
             population.add(c);
 		}
 		catch (ClassNotFoundException | InstantiationException |IllegalAccessException e) {
@@ -227,6 +227,8 @@ public abstract class Critter {
         for (int i = 0; i < population.size(); i++) {
             population.get(i).doTimeStep();
         }
+
+        /*Not completed yet */
 	}
 	
 	public static void displayWorld() {
@@ -238,10 +240,15 @@ public abstract class Critter {
 		for(int i=0; i<Params.world_height; i++){
 			System.out.print('|');
 			for(int j=0; j<Params.world_width; j++){
-				
+				System.out.print(" ");
 			}
 			System.out.print("|\n");
 		}
+        System.out.print("+");
+        for(int i = 0; i<Params.world_width; i++) {
+			System.out.print("-");
+		}
+		System.out.print("+\n");
 		
 	}
 }
