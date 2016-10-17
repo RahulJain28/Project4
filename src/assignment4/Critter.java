@@ -26,7 +26,8 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-
+	private static String[][] display = new String[Params.world_height + 2][Params.world_width + 2];
+	private boolean hasMoved;
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -57,6 +58,7 @@ public abstract class Critter {
      */
 	protected final void walk(int direction) {
         this.energy = this.energy - Params.walk_energy_cost;
+        if(hasMoved) return;
         /*Changing x coordinate */
         if (direction==0 || direction==1 || direction==7) {
             this.x_coord++;
@@ -84,6 +86,7 @@ public abstract class Critter {
         this.walk(direction);
         this.energy = this.energy + (Params.walk_energy_cost *2); 	//re-add energy that was lost walking, subtract run energy cost instead
         this.energy = this.energy - Params.run_energy_cost;
+        hasMoved = true; 
 		
 	}
 	
@@ -106,7 +109,7 @@ public abstract class Critter {
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
         Critter c;
 		try {
-			Class newCritter = Class.forName(myPackage + "." + critter_class_name);
+			Class<?> newCritter = Class.forName(myPackage + "." + critter_class_name);
             c = (Critter) newCritter.newInstance();
             int x = getRandomInt(Params.world_width);
             int y = getRandomInt(Params.world_height);
@@ -114,6 +117,7 @@ public abstract class Critter {
             c.y_coord = y;
             c.energy = Params.start_energy;
             population.add(c);
+            c.hasMoved = true;
 		}
 		catch (ClassNotFoundException | InstantiationException |IllegalAccessException e) {
 			throw new InvalidCritterException(critter_class_name);
@@ -128,10 +132,21 @@ public abstract class Critter {
 	 * @throws InvalidCritterException
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
-
-
-	
-		return null;
+		List<Critter> instances = new java.util.ArrayList<Critter>();
+		try {
+			Critter c;
+			Class<?> newCritter = Class.forName(myPackage + "." + critter_class_name);
+			c = (Critter) newCritter.newInstance();
+			for(int i=0; i<population.size(); i++){
+				if(population.get(i) != null && population.get(i) instanceof newCritter){		//what do i do instance OF here
+					instances.add(population.get(i));
+				}
+			}
+		}
+		catch (ClassNotFoundException | InstantiationException |IllegalAccessException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+		return instances;
 	}
 	
 	/**
@@ -224,22 +239,54 @@ public abstract class Critter {
      * Step 2 - Handle encounters
      */
 	public static void worldTimeStep() {
+		
         for (int i = 0; i < population.size(); i++) {
             population.get(i).doTimeStep();
         }
-
+        int[][] coordinates = new int[population.size()][2];
+        for(int i = 0; i < population.size(); i++){
+        	int x = population.get(i).x_coord + 1;
+        	int y = population.get(i).y_coord + 1;
+        	coordinates[i][0] = x;
+        	coordinates[i][1] = y;
+        }
+        for(int i = 0; i < population.size(); i++){
+        	for(int j = i+1; j < population.size(); j++){
+        		if(population.get(i).x_coord ==population.get(j).x_coord && population.get(i).y_coord == population.get(j).y_coord){
+        			handleEncounter(population.get(i),population.get(j));
+        		}
+        	}
+        }
         /*Not completed yet */
 	}
 	
+	public static void handleEncounter(Critter a, Critter b){
+		
+		
+	}
+	
 	public static void displayWorld() {
-		System.out.print("+");
-		for(int i = 0; i<Params.world_width; i++) {
-			System.out.print("-");
+		int rows = Params.world_height;
+		int columns = Params.world_width;
+		String[][] display = new String[rows + 2][columns + 2];
+		display[0][0] = "+";
+		display[rows + 1][0] = "+";
+		display[0][columns+1] = "+";
+		display[rows+1][columns+1] = "+";
+		
+		for(int i = 1; i<= columns; i++) {
+			display[0][i]="-";
+			display[rows + 1][i]="-";
 		}
-		System.out.print("+\n");
+		for(int i = 1; i<= rows; i++) {
+			display[i][0]="|";
+			display[i][columns+1]="|";
+		}
+		
 		for(int i=0; i<Params.world_height; i++){
 			System.out.print('|');
 			for(int j=0; j<Params.world_width; j++){
+				for(int k = 0; k< population.size(); k++);
 				System.out.print(" ");
 			}
 			System.out.print("|\n");
