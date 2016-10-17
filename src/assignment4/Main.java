@@ -40,7 +40,8 @@ public class Main {
      * @param args args can be empty.  If not empty, provide two parameters -- the first is a file name, 
      * and the second is test (for test output, where all output to be directed to a String), or nothing.
      */
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
+        String input = null;
         if (args.length != 0) {
             try {
                 inputFile = args[0];
@@ -71,46 +72,46 @@ public class Main {
         try {
             while (true) {
                 System.out.print("critters>");
-                String input = kb.nextLine();
+                input = kb.nextLine();
                 String[] words = input.split(" ");
                 if (words[0].equals("quit")) {
                     break;
-                } else if (words[0].equals("show")) {
+                } else if (words[0].equals("show") && words.length==1) {
                     Critter.displayWorld();
                     System.out.println();
-                } else if (words[0].equals("seed")) {
+                } else if (words[0].equals("seed") && words.length==1) {
                     long num = Integer.parseInt(words[1]);
                     Critter.setSeed(num);
                     System.out.println();
-                } else if (words[0].equals("step")) {
-                    if (words.length == 1) {  //command is "step". No number
+                } else if (words[0].equals("step") && words.length==1) { //command is "step". No number argument
                         Critter.worldTimeStep();
-                    } else {
-                        int num = Integer.parseInt(words[1]);
-                        for (int i = 0; i < num; i++) {
-                            Critter.worldTimeStep();
-                        }
+                } else if (words[0].equals("step") && words.length==2) {
+                    int num = Integer.parseInt(words[1]);
+                    for (int i = 0; i < num; i++) {
+                        Critter.worldTimeStep();
                     }
-                } else if (words[0].equals("make")) {
+                } else if (words[0].equals("make") && words.length==2) {
                     String name = words[1];
-                    if (words.length == 2) { //no count argument is provided
+                    Critter.makeCritter(name);
+                } else if (words[0].equals("make") && words.length==3) {
+                    String name = words[1];
+                    int num = Integer.parseInt(words[2]);
+                    for (int i=0; i < num; i++) {
                         Critter.makeCritter(name);
-                    } else { // count argument is provided
-                        int num = Integer.parseInt(words[2]);
-                        for (int i=0; i<num; i++) {
-                            Critter.makeCritter(name);
-                        }
                     }
                 }
                 else if (words[0].equals("stats")) {
-                    
+
+                }
+                else {
+                    System.out.println("invalid command: " + input);
                 }
             }
 
             System.out.flush();
         }
-        catch (InvalidCritterException e) {
-            System.out.println("Invalid Critter Exception");
+        catch (Exception e) {
+            System.out.println("error processing: " + input);
         }
     }
 }
