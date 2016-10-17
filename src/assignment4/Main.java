@@ -68,33 +68,49 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-
         try {
-            for (int i = 0; i < 3; i++) {
-                Critter.makeCritter("Craig");
+            while (true) {
+                System.out.print("critters>");
+                String input = kb.nextLine();
+                String[] words = input.split(" ");
+                if (words[0].equals("quit")) {
+                    break;
+                } else if (words[0].equals("show")) {
+                    Critter.displayWorld();
+                    System.out.println();
+                } else if (words[0].equals("seed")) {
+                    long num = Integer.parseInt(words[1]);
+                    Critter.setSeed(num);
+                    System.out.println();
+                } else if (words[0].equals("step")) {
+                    if (words.length == 1) {  //command is "step". No number
+                        Critter.worldTimeStep();
+                    } else {
+                        int num = Integer.parseInt(words[1]);
+                        for (int i = 0; i < num; i++) {
+                            Critter.worldTimeStep();
+                        }
+                    }
+                } else if (words[0].equals("make")) {
+                    String name = words[1];
+                    if (words.length == 2) { //no count argument is provided
+                        Critter.makeCritter(name);
+                    } else { // count argument is provided
+                        int num = Integer.parseInt(words[2]);
+                        for (int i=0; i<num; i++) {
+                            Critter.makeCritter(name);
+                        }
+                    }
+                }
+                else if (words[0].equals("stats")) {
+                    
+                }
             }
+
+            System.out.flush();
         }
         catch (InvalidCritterException e) {
-            System.out.println("System processing");
+            System.out.println("Invalid Critter Exception");
         }
-        while(true) {
-            System.out.print("critters>");
-            String input = kb.next();
-            if (input.equals("quit")) {
-                break;
-            }
-            if (input.equals("show")) {
-                Critter.displayWorld();
-                System.out.println();
-            }
-            if (input.equals("seed")) {
-                long num = kb.nextInt();
-                Critter.setSeed(num);
-                System.out.println();
-            }
-        }
-
-        System.out.flush();
-
     }
 }

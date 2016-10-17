@@ -27,7 +27,13 @@ public abstract class Critter {
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	private static String[][] display = new String[Params.world_height + 2][Params.world_width + 2];
+	private static List<List<Critter>> world = new java.util.ArrayList<List<Critter>>();
 	private boolean hasMoved;
+<<<<<<< HEAD
+	private boolean fight;  
+=======
+    private Critter parent;
+>>>>>>> f7134d4f8e8105abcc052d3f48409d2fd79ca36f
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -59,6 +65,8 @@ public abstract class Critter {
 	protected final void walk(int direction) {
         this.energy = this.energy - Params.walk_energy_cost;
         if(hasMoved) return;
+        int x =this.x_coord;
+        int y= this.y_coord;
         /*Changing x coordinate */
         if (direction==0 || direction==1 || direction==7) {
             this.x_coord++;
@@ -74,7 +82,21 @@ public abstract class Critter {
         else if (direction==5 || direction==6 || direction==7) {
             this.y_coord--;
         }
-
+        
+        if(this.x_coord > Params.world_width) this.x_coord = this.x_coord - Params.world_width;
+        if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
+        if(this.y_coord > Params.world_height)this.y_coord = this.y_coord - Params.world_height;
+        if(this.y_coord < 0) 				  this.y_coord = this.y_coord + Params.world_height;
+        this.hasMoved = true;
+        if(fight){
+        	for(Critter c: population){
+        		if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
+        			this.x_coord = x;
+        			this.y_coord = y;
+        			break;
+        		}
+        	}
+        }
 	}
 
     /**
@@ -82,15 +104,42 @@ public abstract class Critter {
      * @param direction integer direction of motion. Direction increases in counter clockwise direction
      */
 	protected final void run(int direction) {
-        this.walk(direction);									// running is same as walking twice
-        this.walk(direction);
-        this.energy = this.energy + (Params.walk_energy_cost *2); 	//re-add energy that was lost walking, subtract run energy cost instead
-        this.energy = this.energy - Params.run_energy_cost;
+		this.energy = this.energy - Params.run_energy_cost;
+		if(hasMoved) return;
+		 /*Changing x coordinate */
+        if (direction==0 || direction==1 || direction==7) {
+            this.x_coord+=2;
+        }
+        else if (direction==3 || direction==4 || direction==5) {
+            this.x_coord-=2;
+        }
+
+        /*Changing y coordinate */
+        if (direction==1 || direction==2 || direction==3) {
+            this.y_coord+=2;
+        }
+        else if (direction==5 || direction==6 || direction==7) {
+            this.y_coord-=2;
+        }
+        if(this.x_coord > Params.world_width) this.x_coord = this.x_coord - Params.world_width;
+        if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
+        if(this.y_coord > Params.world_height)this.y_coord = this.y_coord - Params.world_height;
+        if(this.y_coord < 0) 				  this.y_coord = this.y_coord + Params.world_height;
         hasMoved = true; 
+        if(fight){
+        	for(Critter c: population){
+        		if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
+        			this.x_coord = x;
+        			this.y_coord = y;
+        			break;
+        		}
+        	}
+        }
 		
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+
 	}
 
 	public abstract void doTimeStep();
@@ -117,7 +166,8 @@ public abstract class Critter {
             c.y_coord = y;
             c.energy = Params.start_energy;
             population.add(c);
-            c.hasMoved = true;
+            c.hasMoved = false;
+            c.fight = false;
 		}
 		catch (ClassNotFoundException | InstantiationException |IllegalAccessException e) {
 			throw new InvalidCritterException(critter_class_name);
@@ -237,12 +287,17 @@ public abstract class Critter {
      * Step 1 - Invoke doTimeStep() for every living critter. Encounters are handled only after
      *          every critter has moved
      * Step 2 - Handle encounters
+     * Step 3 - Update rest energy for all critters
+     * Step 4 - Remove dead critters
+     * Step 5 - Add babies to general population
      */
 	public static void worldTimeStep() {
-		
+
+        /*Invoking timeStep for all critters */
         for (int i = 0; i < population.size(); i++) {
             population.get(i).doTimeStep();
         }
+
         int[][] coordinates = new int[population.size()][2];
         for(int i = 0; i < population.size(); i++){
         	int x = population.get(i).x_coord + 1;
@@ -257,10 +312,63 @@ public abstract class Critter {
         		}
         	}
         }
+<<<<<<< HEAD
+        
+        
         /*Not completed yet */
 	}
 	
-	public static void handleEncounter(Critter a, Critter b){
+	private static void handleEncounter(Critter a, Critter b){
+		a.fight = true;
+		b.fight = true;
+		boolean a_fight = a.fight(b.toString());
+		boolean b_fight = b.fight(a.toString());
+		int a_roll=0;
+		int b_roll=0;
+		if(a.x_coord == b.x_coord && a.y_coord == b.y_coord && a.energy>0 && b.energy>0){
+			if(a_fight) a_roll = getRandomInt(a.energy);
+			if(b_fight) b_roll = getRandomInt(b.energy);
+			if(a_roll >= b_roll){
+				a.energy = a.energy + (b.energy/2);
+				b.energy = 0;
+			}
+			else{
+				b.energy = b.energy + (a.energy/2);
+				a.energy = 0;
+			}
+		}
+=======
+
+        /*Subtracting rest energy cost */
+        for (Critter c: population) {
+            c.energy = c.energy - Params.rest_energy_cost;
+        }
+
+        /*Removing dead critters */
+        for (Critter c : population) {
+            if (c.energy <=0) {
+                population.remove(c);
+            }
+        }
+
+        /*Adding babies to general population */
+        for (Critter c: babies) {
+            population.add(c);
+        }
+        babies.clear();
+
+        /*Adding algae */
+        for (int i= 0; i < Params.refresh_algae_count; i++) {
+            Critter c = new Algae();
+            c.energy = Params.start_energy;
+            c.x_coord = getRandomInt(Params.world_width);
+            c.y_coord = getRandomInt(Params.world_height);
+            population.add(c);
+        }
+	}
+	
+	private static void handleEncounter(Critter a, Critter b){
+>>>>>>> f7134d4f8e8105abcc052d3f48409d2fd79ca36f
 		
 		
 	}
