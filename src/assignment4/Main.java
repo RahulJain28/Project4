@@ -100,14 +100,18 @@ public class Main {
                         Critter.makeCritter(name);
                     }
                 }
-                else if (words[0].equals("stats")) {
-
+                else if (words[0].equals("stats") && words.length ==2) {
+                    //TODO:complete this case
+                    java.util.List<Critter> result = Critter.getInstances(words[1]);
+                    Critter c;
+                    Class<?> newCritter = Class.forName(myPackage + "." + words[1]);
+                    c = (Critter) newCritter.newInstance();
+                    ((Critter) newCritter.newInstance()).runStats(result);
                 }
                 else {
                     System.out.println("invalid command: " + input);
                 }
             }
-
             System.out.flush();
         }
         catch (Exception e) {

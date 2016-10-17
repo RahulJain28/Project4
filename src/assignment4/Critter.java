@@ -31,6 +31,7 @@ public abstract class Critter {
 	private boolean hasMoved;
 	private boolean fight;  
     private Critter parent;
+
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -157,7 +158,7 @@ public abstract class Critter {
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
         Critter c;
 		try {
-			Class<?> newCritter = Class.forName(myPackage + "." + critter_class_name);
+			Class newCritter = Class.forName(myPackage + "." + critter_class_name);
             c = (Critter) newCritter.newInstance();
             int x = getRandomInt(Params.world_width);
             int y = getRandomInt(Params.world_height);
@@ -187,7 +188,7 @@ public abstract class Critter {
 			Class<?> newCritter = Class.forName(myPackage + "." + critter_class_name);
 			c = (Critter) newCritter.newInstance();
 			for(int i=0; i<population.size(); i++){
-				if(population.get(i) != null && population.get(i) instanceof newCritter){		//what do i do instance OF here
+				if(population.get(i) != null && newCritter.isInstance(population.get(i))){		//what do i do instance OF here
 					instances.add(population.get(i));
 				}
 			}
