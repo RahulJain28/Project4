@@ -29,11 +29,8 @@ public abstract class Critter {
 	private static String[][] display = new String[Params.world_height + 2][Params.world_width + 2];
 	private static List<List<Critter>> world = new java.util.ArrayList<List<Critter>>();
 	private boolean hasMoved;
-<<<<<<< HEAD
 	private boolean fight;  
-=======
     private Critter parent;
->>>>>>> f7134d4f8e8105abcc052d3f48409d2fd79ca36f
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -106,6 +103,8 @@ public abstract class Critter {
 	protected final void run(int direction) {
 		this.energy = this.energy - Params.run_energy_cost;
 		if(hasMoved) return;
+		int x = this.x_coord;
+		int y = this.y_coord;
 		 /*Changing x coordinate */
         if (direction==0 || direction==1 || direction==7) {
             this.x_coord+=2;
@@ -312,8 +311,6 @@ public abstract class Critter {
         		}
         	}
         }
-<<<<<<< HEAD
-        
         
         /*Not completed yet */
 	}
@@ -337,7 +334,6 @@ public abstract class Critter {
 				a.energy = 0;
 			}
 		}
-=======
 
         /*Subtracting rest energy cost */
         for (Critter c: population) {
@@ -365,13 +361,7 @@ public abstract class Critter {
             c.y_coord = getRandomInt(Params.world_height);
             population.add(c);
         }
-	}
-	
-	private static void handleEncounter(Critter a, Critter b){
->>>>>>> f7134d4f8e8105abcc052d3f48409d2fd79ca36f
-		
-		
-	}
+	}	
 	
 	public static void displayWorld() {
 		int rows = Params.world_height;
