@@ -29,7 +29,11 @@ public abstract class Critter {
 	private static String[][] display = new String[Params.world_height + 2][Params.world_width + 2];
 	private static List<List<Critter>> world = new java.util.ArrayList<List<Critter>>();
 	private boolean hasMoved;
+<<<<<<< HEAD
 	private boolean fight;  
+=======
+    private Critter parent;
+>>>>>>> f7134d4f8e8105abcc052d3f48409d2fd79ca36f
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -135,6 +139,7 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+
 	}
 
 	public abstract void doTimeStep();
@@ -282,12 +287,17 @@ public abstract class Critter {
      * Step 1 - Invoke doTimeStep() for every living critter. Encounters are handled only after
      *          every critter has moved
      * Step 2 - Handle encounters
+     * Step 3 - Update rest energy for all critters
+     * Step 4 - Remove dead critters
+     * Step 5 - Add babies to general population
      */
 	public static void worldTimeStep() {
-		
+
+        /*Invoking timeStep for all critters */
         for (int i = 0; i < population.size(); i++) {
             population.get(i).doTimeStep();
         }
+
         int[][] coordinates = new int[population.size()][2];
         for(int i = 0; i < population.size(); i++){
         	int x = population.get(i).x_coord + 1;
@@ -302,6 +312,7 @@ public abstract class Critter {
         		}
         	}
         }
+<<<<<<< HEAD
         
         
         /*Not completed yet */
@@ -326,6 +337,38 @@ public abstract class Critter {
 				a.energy = 0;
 			}
 		}
+=======
+
+        /*Subtracting rest energy cost */
+        for (Critter c: population) {
+            c.energy = c.energy - Params.rest_energy_cost;
+        }
+
+        /*Removing dead critters */
+        for (Critter c : population) {
+            if (c.energy <=0) {
+                population.remove(c);
+            }
+        }
+
+        /*Adding babies to general population */
+        for (Critter c: babies) {
+            population.add(c);
+        }
+        babies.clear();
+
+        /*Adding algae */
+        for (int i= 0; i < Params.refresh_algae_count; i++) {
+            Critter c = new Algae();
+            c.energy = Params.start_energy;
+            c.x_coord = getRandomInt(Params.world_width);
+            c.y_coord = getRandomInt(Params.world_height);
+            population.add(c);
+        }
+	}
+	
+	private static void handleEncounter(Critter a, Critter b){
+>>>>>>> f7134d4f8e8105abcc052d3f48409d2fd79ca36f
 		
 		
 	}
