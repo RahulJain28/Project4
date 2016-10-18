@@ -328,7 +328,22 @@ public abstract class Critter {
         	}
         }
         
-        /*Not completed yet */
+        /*Subtract rest energy from all critters */
+        for (Critter c: population) {
+            c.energy = c.energy - Params.rest_energy_cost;
+        }
+
+        /*Remove any dead critters */
+        for (Critter c: population) {
+            if (c.energy <0) {
+                population.remove(c);
+            }
+        }
+        for (Critter c: babies) {
+            population.add(c);
+        }
+
+        babies.clear();
 	}
 	
 	private static void handleEncounter(Critter a, Critter b){
