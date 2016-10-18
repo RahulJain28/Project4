@@ -77,7 +77,7 @@ public class Main {
                 } else if (words[0].equals("show") && words.length==1) {
                     Critter.displayWorld();
                     System.out.println();
-                } else if (words[0].equals("seed") && words.length==1) {
+                } else if (words[0].equals("seed") && words.length==2) {
                     long num = Integer.parseInt(words[1]);
                     Critter.setSeed(num);
                     System.out.println();

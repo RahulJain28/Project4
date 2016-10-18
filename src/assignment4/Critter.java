@@ -312,13 +312,6 @@ public abstract class Critter {
             population.get(i).fight = false;
         }
 
-      /*  int[][] coordinates = new int[population.size()][2];
-        for(int i = 0; i < population.size(); i++){
-        	int x = population.get(i).x_coord + 1;
-        	int y = population.get(i).y_coord + 1;
-        	coordinates[i][0] = x;
-        	coordinates[i][1] = y;
-        }*/
         for(int i = 0; i < population.size(); i++){
         	for(int j = i+1; j < population.size(); j++){
         		if(population.get(i).x_coord ==population.get(j).x_coord && population.get(i).y_coord == population.get(j).y_coord){
@@ -333,19 +326,21 @@ public abstract class Critter {
         }
 
         /*Removing dead critters */
-        for (Critter c : population) {
-            if (c.energy <=0) {
-                population.remove(c);
+        for (int i =0; i<population.size(); i++) {
+            if (population.get(i).energy <=0) {
+                population.remove(i);
+                i--;
             }
         }
-
+    //    System.out.println(population.size());
+        
         /*Adding babies to general population */
         for (Critter c: babies) {
             population.add(c);
         }
         babies.clear();
 
-        /*Adding algae */
+   //     Adding algae 
         for (int i= 0; i < Params.refresh_algae_count; i++) {
             Critter c = new Algae();
             c.energy = Params.start_energy;
@@ -375,6 +370,9 @@ public abstract class Critter {
 				a.energy = 0;
 			}
 		}
+//		System.out.println(a.energy);
+//		System.out.println(b.energy);
+		
 
 	}	
 	
