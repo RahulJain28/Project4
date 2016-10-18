@@ -139,6 +139,20 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if (this.energy < Params.min_reproduce_energy) {
+            return;
+        }
+        offspring.energy = (this.energy/2);
+        this.energy = (this.energy)+1;
+
+        offspring.x_coord = this.x_coord;
+        offspring.y_coord = this.y_coord;
+
+        offspring.walk(direction);
+        offspring.energy = offspring.energy + Params.walk_energy_cost; //walk() takes off energy which we don't want
+                                                                       //to take from a newborn critter
+
+        babies.add(offspring);
 
 	}
 
