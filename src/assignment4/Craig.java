@@ -50,6 +50,7 @@ public class Craig extends Critter {
 		}
 		assert(turn < 8);
 		
+		
 		dir = (dir + turn) % 8;
 	}
 

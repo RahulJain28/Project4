@@ -49,9 +49,7 @@ public class Main {
             } catch (FileNotFoundException e) {
                 System.out.println("USAGE: java Main OR java Main <input file> <test output>");
                 e.printStackTrace();
-            } catch (NullPointerException e) {
-                System.out.println("USAGE: java Main OR java Main <input file>  <test output>");
-            }
+            } catch (NullPointerException e) {}
             if (args.length >= 2) {
                 if (args[1].equals("test")) { // if the word "test" is the second argument to java
                     // Create a stream to hold the output
@@ -114,7 +112,7 @@ public class Main {
             System.out.flush();
         }
         catch (Exception e) {
-            System.out.println("error processing: " + input);
+            System.out.println("error processing: " + input + e);
         }
     }
 }

@@ -26,8 +26,6 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
-	private static String[][] display = new String[Params.world_height + 2][Params.world_width + 2];
-	private static List<List<Critter>> world = new java.util.ArrayList<List<Critter>>();
 	private boolean hasMoved;
 	private boolean fight;  
     private Critter parent;
@@ -81,9 +79,9 @@ public abstract class Critter {
             this.y_coord--;
         }
         
-        if(this.x_coord > Params.world_width) this.x_coord = this.x_coord - Params.world_width;
+        if(this.x_coord >= Params.world_width) this.x_coord = this.x_coord - Params.world_width;
         if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
-        if(this.y_coord > Params.world_height)this.y_coord = this.y_coord - Params.world_height;
+        if(this.y_coord >= Params.world_height)this.y_coord = this.y_coord - Params.world_height;
         if(this.y_coord < 0) 				  this.y_coord = this.y_coord + Params.world_height;
         this.hasMoved = true;
         if(fight){
@@ -121,9 +119,9 @@ public abstract class Critter {
         else if (direction==5 || direction==6 || direction==7) {
             this.y_coord-=2;
         }
-        if(this.x_coord > Params.world_width) this.x_coord = this.x_coord - Params.world_width;
+        if(this.x_coord >= Params.world_width) this.x_coord = this.x_coord - Params.world_width;
         if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
-        if(this.y_coord > Params.world_height)this.y_coord = this.y_coord - Params.world_height;
+        if(this.y_coord >= Params.world_height)this.y_coord = this.y_coord - Params.world_height;
         if(this.y_coord < 0) 				  this.y_coord = this.y_coord + Params.world_height;
         hasMoved = true; 
         if(fight){
@@ -180,7 +178,7 @@ public abstract class Critter {
             c.y_coord = y;
             c.energy = Params.start_energy;
             population.add(c);
-            c.hasMoved = false;
+            c.hasMoved = false; 
             c.fight = false;
 		}
 		catch (ClassNotFoundException | InstantiationException |IllegalAccessException e) {
@@ -309,17 +307,18 @@ public abstract class Critter {
 
         /*Invoking timeStep for all critters */
         for (int i = 0; i < population.size(); i++) {
+        	population.get(i).hasMoved= false;
             population.get(i).doTimeStep();
             population.get(i).fight = false;
         }
 
-        int[][] coordinates = new int[population.size()][2];
+      /*  int[][] coordinates = new int[population.size()][2];
         for(int i = 0; i < population.size(); i++){
         	int x = population.get(i).x_coord + 1;
         	int y = population.get(i).y_coord + 1;
         	coordinates[i][0] = x;
         	coordinates[i][1] = y;
-        }
+        }*/
         for(int i = 0; i < population.size(); i++){
         	for(int j = i+1; j < population.size(); j++){
         		if(population.get(i).x_coord ==population.get(j).x_coord && population.get(i).y_coord == population.get(j).y_coord){
@@ -328,44 +327,6 @@ public abstract class Critter {
         	}
         }
         
-        /*Subtract rest energy from all critters */
-        for (Critter c: population) {
-            c.energy = c.energy - Params.rest_energy_cost;
-        }
-
-        /*Remove any dead critters */
-        for (Critter c: population) {
-            if (c.energy <0) {
-                population.remove(c);
-            }
-        }
-        for (Critter c: babies) {
-            population.add(c);
-        }
-
-        babies.clear();
-	}
-	
-	private static void handleEncounter(Critter a, Critter b){
-		a.fight = true;
-		b.fight = true;
-		boolean a_fight = a.fight(b.toString());
-		boolean b_fight = b.fight(a.toString());
-		int a_roll=0;
-		int b_roll=0;
-		if(a.x_coord == b.x_coord && a.y_coord == b.y_coord && a.energy>0 && b.energy>0){
-			if(a_fight) a_roll = getRandomInt(a.energy);
-			if(b_fight) b_roll = getRandomInt(b.energy);
-			if(a_roll >= b_roll){
-				a.energy = a.energy + (b.energy/2);
-				b.energy = 0;
-			}
-			else{
-				b.energy = b.energy + (a.energy/2);
-				a.energy = 0;
-			}
-		}
-
         /*Subtracting rest energy cost */
         for (Critter c: population) {
             c.energy = c.energy - Params.rest_energy_cost;
@@ -392,6 +353,29 @@ public abstract class Critter {
             c.y_coord = getRandomInt(Params.world_height);
             population.add(c);
         }
+        
+	}
+	
+	private static void handleEncounter(Critter a, Critter b){
+		a.fight = true;
+		b.fight = true;
+		boolean a_fight = a.fight(b.toString());
+		boolean b_fight = b.fight(a.toString());
+		int a_roll=0;
+		int b_roll=0;
+		if(a.x_coord == b.x_coord && a.y_coord == b.y_coord && a.energy>0 && b.energy>0){
+			if(a_fight) a_roll = getRandomInt(a.energy);
+			if(b_fight) b_roll = getRandomInt(b.energy);
+			if(a_roll >= b_roll){
+				a.energy = a.energy + (b.energy/2);
+				b.energy = 0;
+			}
+			else{
+				b.energy = b.energy + (a.energy/2);
+				a.energy = 0;
+			}
+		}
+
 	}	
 	
 	public static void displayWorld() {
@@ -411,20 +395,21 @@ public abstract class Critter {
 			display[i][0]="|";
 			display[i][columns+1]="|";
 		}
+
+		for(Critter c: population){
+			display[c.y_coord + 1][c.x_coord+1] = c.toString();
+		}
 		
-		for(int i=0; i<Params.world_height; i++){
-			System.out.print('|');
-			for(int j=0; j<Params.world_width; j++){
-				for(int k = 0; k< population.size(); k++);
-				System.out.print(" ");
+		for(int i=0; i<rows+2; i++){
+			for(int j=0; j<columns+2; j++){
+				if((display[i][j] == null)) 
+					System.out.print(" ");
+				else	
+					System.out.print(display[i][j]);
 			}
-			System.out.print("|\n");
+			System.out.print("\n");
 		}
-        System.out.print("+");
-        for(int i = 0; i<Params.world_width; i++) {
-			System.out.print("-");
-		}
-		System.out.print("+\n");
+        
 		
 	}
 }
