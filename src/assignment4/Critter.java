@@ -143,7 +143,7 @@ public abstract class Critter {
             return;
         }
         offspring.energy = (this.energy/2);
-        this.energy = (this.energy)+1;
+        this.energy = (this.energy/2)+1;
 
         offspring.x_coord = this.x_coord;
         offspring.y_coord = this.y_coord;
@@ -202,7 +202,7 @@ public abstract class Critter {
 			Class<?> newCritter = Class.forName(myPackage + "." + critter_class_name);
 			c = (Critter) newCritter.newInstance();
 			for(int i=0; i<population.size(); i++){
-				if(population.get(i) != null && newCritter.isInstance(population.get(i))){		//what do i do instance OF here
+				if(population.get(i) != null && newCritter.isInstance(population.get(i))){		
 					instances.add(population.get(i));
 				}
 			}
@@ -310,6 +310,7 @@ public abstract class Critter {
         /*Invoking timeStep for all critters */
         for (int i = 0; i < population.size(); i++) {
             population.get(i).doTimeStep();
+            population.get(i).fight = false;
         }
 
         int[][] coordinates = new int[population.size()][2];
