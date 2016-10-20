@@ -78,7 +78,7 @@ public class Main {
         try {
             while (true) {
                 System.out.print("critters>");
-                input = kb.nextLine();
+                input = kb.nextLine().trim();
                 String[] words = input.split(" ");
                 /*if command is invalid */
                 if (!words[0].equals("quit") && !words[0].equals("show") && !words[0].equals("seed") && !words[0].equals("step") && !words[0].equals("make") && !words[0].equals("stats")) {
@@ -91,11 +91,9 @@ public class Main {
                     break;
                 } else if (words[0].equals("show") && words.length == 1) {
                     Critter.displayWorld();
-                    System.out.println();
                 } else if (words[0].equals("seed") && words.length == 2) {
                     long num = Integer.parseInt(words[1]);
                     Critter.setSeed(num);
-                    System.out.println();
                 } else if (words[0].equals("step") && words.length == 1) { //command is "step". No number argument
                     Critter.worldTimeStep();
                 } else if (words[0].equals("step") && words.length == 2) {
