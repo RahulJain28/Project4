@@ -3,8 +3,8 @@
  * Aditya Kharosekar
  * amk3587
  * 16465
- * <Student2 Name>
- * <Student2 EID>
+ * Rahul Jain	
+ * rj8656
  * <Student2 5-digit Unique No.>
  * Slip days used: <0>
  * Fall 2016
