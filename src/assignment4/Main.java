@@ -128,5 +128,6 @@ public class Main {
         		System.out.println("error processing: " + input);
         	}
         }
+        System.out.flush();
     }
 }
