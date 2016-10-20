@@ -75,56 +75,59 @@ public class Main {
 
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
-        try {
-            while (true) {
-                System.out.print("critters>");
-                input = kb.nextLine().trim();
-                String[] words = input.split(" ");
-                /*if command is invalid */
-                if (!words[0].equals("quit") && !words[0].equals("show") && !words[0].equals("seed") && !words[0].equals("step") && !words[0].equals("make") && !words[0].equals("stats")) {
-                    System.out.println("invalid command: " + input);
-                    continue;
-                }
+        while(true){
+        	try {
+        		System.out.print("critters>");
+        		input = kb.nextLine().trim();
+        		String[] words = input.split(" ");
+        		/*if command is invalid */
+        		if (!words[0].equals("quit") && !words[0].equals("show") && !words[0].equals("seed") && !words[0].equals("step") && !words[0].equals("make") && !words[0].equals("stats")) {
+        			System.out.println("invalid command: " + input);
+        			continue;
+        		}
 
-                /*if command is valid but maybe some extra text */
-                if (words[0].equals("quit")) {
-                    break;
-                } else if (words[0].equals("show") && words.length == 1) {
-                    Critter.displayWorld();
-                } else if (words[0].equals("seed") && words.length == 2) {
-                    long num = Integer.parseInt(words[1]);
-                    Critter.setSeed(num);
-                } else if (words[0].equals("step") && words.length == 1) { //command is "step". No number argument
-                    Critter.worldTimeStep();
-                } else if (words[0].equals("step") && words.length == 2) {
-                    int num = Integer.parseInt(words[1]);
-                    for (int i = 0; i < num; i++) {
-                        Critter.worldTimeStep();
-                    }
-                } else if (words[0].equals("make") && words.length == 2) {
-                    String name = words[1];
-                    Critter.makeCritter(name);
-                } else if (words[0].equals("make") && words.length == 3) {
-                    String name = words[1];
-                    int num = Integer.parseInt(words[2]);
-                    for (int i = 0; i < num; i++) {
-                        Critter.makeCritter(name);
-                    }
-                } else if (words[0].equals("stats") && words.length == 2) {
-                    java.util.List<Critter> result = Critter.getInstances(words[1]);
-                    Critter c;
-                    Class<?> newCritter = Class.forName(myPackage + "." + words[1]);
-                    c = (Critter) newCritter.newInstance();
-                    Method m = newCritter.getMethod("runStats", List.class);
-                    m.invoke(null, result);
-                }
-                else {
-                    System.out.println("error processing: " + input);
-                }
-            }
-            System.out.flush();
-        } catch (Exception e) {
-            System.out.println("error processing: " + input);
+        		/*if command is valid but maybe some extra text */
+        		if (words[0].equals("quit")) {
+        			break;
+        		} else if (words[0].equals("show") && words.length == 1) {
+        			Critter.displayWorld();
+        			System.out.println();
+        		} else if (words[0].equals("seed") && words.length == 2) {
+        			long num = Integer.parseInt(words[1]);
+        			Critter.setSeed(num);
+        			System.out.println();
+        		} else if (words[0].equals("step") && words.length == 1) { //command is "step". No number argument
+        			Critter.worldTimeStep();
+        		} else if (words[0].equals("step") && words.length == 2) {
+        			int num = Integer.parseInt(words[1]);
+        			for (int i = 0; i < num; i++) {
+        				Critter.worldTimeStep();
+        			}
+        		} else if (words[0].equals("make") && words.length == 2) {
+        			String name = words[1];
+        			Critter.makeCritter(name);
+        		} else if (words[0].equals("make") && words.length == 3) {
+        			String name = words[1];
+        			int num = Integer.parseInt(words[2]);
+        			for (int i = 0; i < num; i++) {
+        				Critter.makeCritter(name);
+        			}
+        		} else if (words[0].equals("stats") && words.length == 2) {
+        			java.util.List<Critter> result = Critter.getInstances(words[1]);
+        			Critter c;
+        			Class<?> newCritter = Class.forName(myPackage + "." + words[1]);
+        			c = (Critter) newCritter.newInstance();
+        			Method m = newCritter.getMethod("runStats", List.class);
+        			m.invoke(null, result);
+        		}
+        		else {
+        			System.out.println("error processing: " + input);
+        		}
+        		System.out.flush();
+        	} catch (Exception e) {
+        		System.out.println("error processing: " + input);
+        	}
         }
+        System.out.flush();
     }
 }
