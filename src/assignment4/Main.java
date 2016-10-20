@@ -118,7 +118,7 @@ public class Main {
                     Class<?> newCritter = Class.forName(myPackage + "." + words[1]);
                     c = (Critter) newCritter.newInstance();
                     Method m = newCritter.getMethod("runStats", List.class);
-                    c.runStats(result);
+                    m.invoke(null, result);
                 }
                 else {
                     System.out.println("error processing: " + input);
