@@ -94,7 +94,7 @@ public class Main {
                 } else if (words[0].equals("make") && words.length==3) {
                     String name = words[1];
                     int num = Integer.parseInt(words[2]);
-                    for (int i=0; i < num; i++) {
+                      for (int i=0; i < num; i++) {
                         Critter.makeCritter(name);
                     }
                 }
