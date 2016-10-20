@@ -5,9 +5,9 @@ package assignment4;
  * Aditya Kharosekar
  * amk3587
  * 16465
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Rahul Jain	
+ * rj8656
+ *16470
  * Slip days used: <0>
  * Fall 2016
  */

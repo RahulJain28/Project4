@@ -4,9 +4,9 @@
  * <Student1 Name>
  * <Student1 EID>
  * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+  * Rahul Jain	
+ * rj8656
+ *16470
  * Slip days used: <0>
  * Fall 2016
  */

@@ -267,6 +267,10 @@ public abstract class Critter {
 		protected int getY_coord() {
 			return super.y_coord;
 		}
+		protected boolean isDead() {
+			return super.energy <=0;
+			
+		}
 		
 
 		/*
@@ -343,13 +347,13 @@ public abstract class Critter {
         babies.clear();
 
    //     Adding algae 
-        for (int i= 0; i < Params.refresh_algae_count; i++) {
-            Critter c = new Algae();
-            c.energy = Params.start_energy;
-            c.x_coord = getRandomInt(Params.world_width);
-            c.y_coord = getRandomInt(Params.world_height);
-            population.add(c);
-        }
+//        for (int i= 0; i < Params.refresh_algae_count; i++) {
+//            Critter c = new Algae();
+//            c.energy = Params.start_energy;
+//            c.x_coord = getRandomInt(Params.world_width);
+//            c.y_coord = getRandomInt(Params.world_height);
+//            population.add(c);
+//        }
         
 	}
 
