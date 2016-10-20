@@ -1,9 +1,8 @@
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
+ * Aditya Kharosekar
+ * amk3587
+ * 16465
  * <Student2 Name>
  * <Student2 EID>
  * <Student2 5-digit Unique No.>
@@ -12,8 +11,6 @@
  */
 package assignment4;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /* see the PDF for descriptions of the methods and fields in this class
@@ -135,7 +132,13 @@ public abstract class Critter {
         }
 		
 	}
-	
+
+	/**
+	 * Called by parent Critter. Function will take newly created Critter and set its position to be adjacent to
+     * the parent's position. It's exact position is determined by direction parameter
+	 * @param offspring newly created Critter
+	 * @param direction integer direction. Determines where next to parent the offspring should be placed
+     */
 	protected final void reproduce(Critter offspring, int direction) {
 		if (this.energy < Params.min_reproduce_energy) {
             return;
@@ -149,7 +152,7 @@ public abstract class Critter {
         offspring.walk(direction);
         offspring.energy = offspring.energy + Params.walk_energy_cost; //walk() takes off energy which we don't want
                                                                        //to take from a newborn critter
-
+		offspring.hasMoved = false;
         babies.add(offspring);
 
 	}
@@ -200,7 +203,7 @@ public abstract class Critter {
 			Class<?> newCritter = Class.forName(myPackage + "." + critter_class_name);
 			c = (Critter) newCritter.newInstance();
 			for(int i=0; i<population.size(); i++){
-				if(population.get(i) != null && newCritter.isInstance(population.get(i))){		
+				if(population.get(i) != null && newCritter.isInstance(population.get(i))){
 					instances.add(population.get(i));
 				}
 			}
@@ -350,7 +353,14 @@ public abstract class Critter {
         }
         
 	}
-	
+
+    /**
+     * Will handle encounters between 2 critters.
+     * First calls each critter's fight() method. If none of the critters move, roll random numbers and decide
+     * fate of encounter
+     * @param a one critter participant in the encounter
+     * @param b the other participant
+     */
 	private static void handleEncounter(Critter a, Critter b){
 		a.fight = true;
 		b.fight = true;
@@ -370,13 +380,14 @@ public abstract class Critter {
 				a.energy = 0;
 			}
 		}
-//		System.out.println(a.energy);
-//		System.out.println(b.energy);
 		
 
-	}	
-	
-	public static void displayWorld() {
+	}
+
+    /**
+     * Displays the world and all living critters, including Algae. Calls each critter's toString method
+     */
+    public static void displayWorld() {
 		int rows = Params.world_height;
 		int columns = Params.world_width;
 		String[][] display = new String[rows + 2][columns + 2];
