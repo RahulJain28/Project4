@@ -70,10 +70,10 @@ public abstract class Critter {
 
         /*Changing y coordinate */
         if (direction==1 || direction==2 || direction==3) {
-            this.y_coord++;
+            this.y_coord--;
         }
         else if (direction==5 || direction==6 || direction==7) {
-            this.y_coord--;
+            this.y_coord++;
         }
         
         if(this.x_coord >= Params.world_width) this.x_coord = this.x_coord - Params.world_width;
@@ -111,10 +111,10 @@ public abstract class Critter {
 
         /*Changing y coordinate */
         if (direction==1 || direction==2 || direction==3) {
-            this.y_coord+=2;
+            this.y_coord-=2;
         }
         else if (direction==5 || direction==6 || direction==7) {
-            this.y_coord-=2;
+            this.y_coord+=2;
         }
         if(this.x_coord >= Params.world_width) this.x_coord = this.x_coord - Params.world_width;
         if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
