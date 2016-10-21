@@ -1,3 +1,15 @@
+/* CRITTERS Critter.java
+ * EE422C Project 4 submission by
+ * Aditya Kharosekar
+ * amk3587
+ * 16465
+ * Rahul Jain
+ * rj8656
+ * <Student2 5-digit Unique No.>
+ * Slip days used: <0>
+ * Fall 2016
+ */
+
 package assignment4;
 
 /**

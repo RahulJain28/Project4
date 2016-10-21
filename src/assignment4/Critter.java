@@ -82,7 +82,7 @@ public abstract class Critter {
         this.hasMoved = true;
         if(fight){
         	for(Critter c: population){
-        		if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
+        		if(c.x_coord == this.x_coord && c.y_coord == this.y_coord && c.energy >0){
         			this.x_coord = x;
         			this.y_coord = y;
         			break;
@@ -119,10 +119,10 @@ public abstract class Critter {
         if(this.x_coord < 0) 				  this.x_coord = this.x_coord + Params.world_width;
         if(this.y_coord >= Params.world_height)this.y_coord = this.y_coord - Params.world_height;
         if(this.y_coord < 0) 				  this.y_coord = this.y_coord + Params.world_height;
-        hasMoved = true; 
+        this.hasMoved = true;
         if(fight){
         	for(Critter c: population){
-        		if(c.x_coord == this.x_coord && c.y_coord == this.y_coord){
+        		if(c.x_coord == this.x_coord && c.y_coord == this.y_coord && c.energy >0){
         			this.x_coord = x;
         			this.y_coord = y;
         			break;
@@ -267,9 +267,14 @@ public abstract class Critter {
 		protected int getY_coord() {
 			return super.y_coord;
 		}
+
+		/**
+		 * Returns whether a Critter is dead
+		 * @return
+         */
 		protected boolean isDead() {
 			return super.energy <=0;
-			
+
 		}
 		
 

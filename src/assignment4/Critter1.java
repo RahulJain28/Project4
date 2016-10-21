@@ -1,3 +1,14 @@
+/* CRITTERS Critter.java
+ * EE422C Project 4 submission by
+ * Aditya Kharosekar
+ * amk3587
+ * 16465
+ * Rahul Jain
+ * rj8656
+ * <Student2 5-digit Unique No.>
+ * Slip days used: <0>
+ * Fall 2016
+ */
 
 package assignment4;
 
@@ -24,7 +35,9 @@ public class Critter1 extends Critter {
         if(count>5){
         	run(1);
         }
-        else walk(4);
+        else {
+            walk(4);
+        }
         
     	if(3+5+9+6*Critter.getRandomInt(8) > 45) {
             Critter1 baby = new Critter1();
